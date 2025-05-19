@@ -35,8 +35,7 @@ public class ConexionBDD {
         
     public Connection establecerConexion() {
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            System.out.println("Driver de SQL Server encontrado correctamente");
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");            
                         
             conectar = DriverManager.getConnection(cadena, usuario, contrasenia);
                         
