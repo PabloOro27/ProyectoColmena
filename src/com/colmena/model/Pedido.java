@@ -3,22 +3,22 @@ package com.colmena.model;
 import java.sql.Date;
 import java.util.List;
 
-public class Venta {
+public class Pedido {
     private int id;
     private Cliente cliente;
     private Usuario vendedor;
     private Date fecha;
-    private List<DetalleVenta> detalles;
+    private List<DetallePedido> detalles;
     private double total;
     private String estado;
 
     // contructor
-    public Venta(Date fecha, List<DetalleVenta> detalles) {
+    public Pedido(Date fecha, List<DetallePedido> detalles) {
         this.fecha = fecha;
         this.detalles = detalles;
     }
 
-    public Venta() {
+    public Pedido() {
     }
 
     // getters y setters
@@ -46,10 +46,10 @@ public class Venta {
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
-    public List<DetalleVenta> getDetalles() {
+    public List<DetallePedido> getDetalles() {
         return detalles;
     }
-    public void setDetalles(List<DetalleVenta> detalles) {
+    public void setDetalles(List<DetallePedido> detalles) {
         this.detalles = detalles;
     }
     public double getTotal() {
@@ -68,12 +68,12 @@ public class Venta {
     // Métodos para ventas 
     public void calcularTotal() {
         this.total = 0;
-        for (DetalleVenta detalle : detalles) {
+        for (DetallePedido detalle : detalles) {
             this.total += detalle.getSubtotal();
         }
     }
     
-    public void agregarDetalle(DetalleVenta detalle) {
+    public void agregarDetalle(DetallePedido detalle) {
         this.detalles.add(detalle);
         calcularTotal();
     }

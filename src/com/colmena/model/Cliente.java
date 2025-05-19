@@ -1,5 +1,7 @@
 package com.colmena.model;
 
+import java.sql.Date;
+
 public class Cliente {
     private int id;
     private String nombre;
@@ -8,6 +10,9 @@ public class Cliente {
     private String email;
     private String direccion;
     private boolean activo;
+    private double saldoPendiente;
+    private Usuario usuario; 
+    private Date fechaRegistro;
 
     // constructor
     public Cliente(int id, String nombre, String apellido, String telefono, String email, String direccion) {
@@ -65,4 +70,28 @@ public class Cliente {
     public void setActivo(boolean activo) {
         this.activo = activo;
     } 
+    public double getSaldoPendiente() {
+        return saldoPendiente;
+    }
+
+    public void setSaldoPendiente(double saldoPendiente) {
+        this.saldoPendiente = saldoPendiente;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Date getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(Date fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+
 }
