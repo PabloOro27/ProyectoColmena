@@ -11,6 +11,9 @@ public class Pedido {
     private List<DetallePedido> detalles;
     private double total;
     private String estado;
+    private double saldoPagado;
+    private String metodoPago;
+    private String notas;  
 
     // contructor
     public Pedido(Date fecha, List<DetallePedido> detalles) {
@@ -65,6 +68,30 @@ public class Pedido {
         this.estado = estado;
     }
 
+    public double getSaldoPagado() {
+        return saldoPagado;
+    }
+
+    public void setSaldoPagado(double saldoPagado) {
+        this.saldoPagado = saldoPagado;
+    }
+
+    public String getMetodoPago() {
+        return metodoPago;
+    }
+
+    public void setMetodoPago(String metodoPago) {
+        this.metodoPago = metodoPago;
+    }
+
+    public String getNotas() {
+        return notas;
+    }
+
+    public void setNotas(String notas) {
+        this.notas = notas;
+    }
+    
     // Métodos para ventas 
     public void calcularTotal() {
         this.total = 0;

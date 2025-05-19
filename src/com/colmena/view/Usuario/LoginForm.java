@@ -222,8 +222,7 @@ public class LoginForm extends JFrame {
     }
     
     // Método main para pruebas
-    public static void main(String[] args) {
-        // Establecer look and feel del sistema
+    public static void main(String[] args) {        
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {

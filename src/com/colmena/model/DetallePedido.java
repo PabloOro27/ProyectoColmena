@@ -3,15 +3,11 @@ package com.colmena.model;
 public class DetallePedido {
     private int id;
     private Pedido pedido;
+    
     private Producto producto;
     private int cantidad;
     private double precioUnitario;
-    private double subtotal;   
-    private double saldoPagado;
-    private String metodoPago;
-    private String notas;     
-
-    
+    private double subtotal;      
 
     public DetallePedido(Producto producto, int cantidad, double precioUnitario) {
         this.producto = producto;
@@ -26,13 +22,15 @@ public class DetallePedido {
     }
     public void setId(int id) {
         this.id = id;
-    }
-    public Pedido getVenta() {
+    }    
+    public Pedido getPedido() {
         return pedido;
     }
-    public void setVenta(Pedido venta) {
-        this.pedido = venta;
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
     }
+
     public Producto getProducto() {
         return producto;
     }
@@ -56,31 +54,7 @@ public class DetallePedido {
     }
     public void setSubtotal(double subtotal) {
         this.subtotal = subtotal;
-    }
-    
-    public double getSaldoPagado() {
-        return saldoPagado;
-    }
-
-    public void setSaldoPagado(double saldoPagado) {
-        this.saldoPagado = saldoPagado;
-    }
-
-    public String getMetodoPago() {
-        return metodoPago;
-    }
-
-    public void setMetodoPago(String metodoPago) {
-        this.metodoPago = metodoPago;
-    }
-
-    public String getNotas() {
-        return notas;
-    }
-
-    public void setNotas(String notas) {
-        this.notas = notas;
-    }
+    }    
     
     // metodo para calcular subtotal 
     public void calcularSubtotal() {
