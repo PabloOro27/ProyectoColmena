@@ -11,6 +11,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import com.colmena.controller.PrincipalController;
+import com.colmena.view.Clientes.ClientesPanel;
 import com.colmena.view.Productos.ProductosPanel;
 import com.colmena.view.Usuario.*;
 import javax.swing.plaf.basic.BasicButtonUI;
@@ -57,8 +58,8 @@ public class PantallaPrincipal extends JFrame {
 
         // Configuración básica
         setTitle("Colmena - Sistema de Gestión de Globos");
-        setSize(1200, 700);
-        setMinimumSize(new Dimension(800, 600));
+        setSize(1500, 800);
+        setMinimumSize(new Dimension(1250, 700));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -74,11 +75,11 @@ public class PantallaPrincipal extends JFrame {
         mainPanel = new JPanel(new BorderLayout(0, 0));
         mainPanel.setBackground(COLOR_FONDO);
 
-        // Crear panel de menú lateral
+        // Panel de menú lateral
         menuPanel = createMenuPanel();
         mainPanel.add(menuPanel, BorderLayout.WEST);
 
-        // Panel de contenido principal (donde se cargarán las vistas)
+        // Panel de contenido
         JPanel rightPanel = new JPanel(new BorderLayout(0, 0));
         rightPanel.setBackground(COLOR_FONDO);
 
@@ -159,7 +160,7 @@ public class PantallaPrincipal extends JFrame {
         btnClientes = createMenuButton("Clientes", "clients.png", e -> showClientesPanel());
         btnReportes = createMenuButton("Reportes", "reports.png", e -> showReportesPanel());
         btnUsuarios = createMenuButton("Usuarios", "users.png", e -> showUsuariosPanel());
-        btnConfiguracion = createMenuButton("Configuración", "settings.png", e -> showConfiguracionPanel());
+        // btnConfiguracion = createMenuButton("Configuración", "settings.png", e -> showConfiguracionPanel());
         btnSalir = createMenuButton("Cerrar Sesión", "logout.png", e -> cerrarSesion());
 
         // Agregar botones al panel
@@ -173,7 +174,7 @@ public class PantallaPrincipal extends JFrame {
         // Solo mostrar botones de administración si el usuario es admin
         if (usuarioActual.getRol().equalsIgnoreCase("Administrador")) {
             addMenuButton(buttonsPanel, btnUsuarios);
-            addMenuButton(buttonsPanel, btnConfiguracion);
+            // addMenuButton(buttonsPanel, btnConfiguracion);
         }
 
         buttonsPanel.add(Box.createVerticalGlue()); // Espacio flexible
@@ -389,25 +390,7 @@ public class PantallaPrincipal extends JFrame {
 
         dashboardPanel.add(topPanel, BorderLayout.NORTH);
         dashboardPanel.add(statsPanel, BorderLayout.CENTER);
-
-        // Agregar panel de productos más vendidos si está disponible
-        Map<String, Integer> productosMasVendidos = dashboardController.obtenerProductosMasVendidos();
-        if (!productosMasVendidos.isEmpty()) {
-            JPanel chartsPanel = new JPanel(new GridLayout(1, 2, 15, 0));
-            chartsPanel.setBackground(COLOR_FONDO);
-
-            JPanel topProductsPanel = createTopProductsPanel(productosMasVendidos);
-            chartsPanel.add(topProductsPanel);
-
-            // Si también tenemos datos de ventas por categoría
-            Map<String, Double> ventasPorCategoria = dashboardController.obtenerVentasPorCategoria();
-            if (!ventasPorCategoria.isEmpty()) {
-                JPanel categorySalesPanel = createCategorySalesPanel(ventasPorCategoria);
-                chartsPanel.add(categorySalesPanel);
-            }
-
-            dashboardPanel.add(chartsPanel, BorderLayout.SOUTH);
-        }
+        
 
         contentPanel.add(dashboardPanel, BorderLayout.CENTER);
         contentPanel.revalidate();
@@ -518,16 +501,10 @@ public class PantallaPrincipal extends JFrame {
 
     private void showClientesPanel() {
         contentPanel.removeAll();
+        
+        ClientesPanel clientesPanel = new ClientesPanel(usuarioActual);
 
-        // Aquí crearías e insertarías tu panel de gestión de clientes
-        JPanel constructionPanel = createConstructionPanel("Gestión de Clientes",
-                "<html>Aquí podrás administrar la información de tus clientes.<br>"
-                        + "• Ver lista de clientes<br>"
-                        + "• Añadir nuevos clientes<br>"
-                        + "• Actualizar datos de contacto<br>"
-                        + "• Ver historial de compras</html>");
-
-        contentPanel.add(constructionPanel, BorderLayout.CENTER);
+        contentPanel.add(clientesPanel, BorderLayout.CENTER);
         contentPanel.revalidate();
         contentPanel.repaint();
     }

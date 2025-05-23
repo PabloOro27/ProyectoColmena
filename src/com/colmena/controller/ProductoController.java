@@ -24,7 +24,7 @@ public class ProductoController {
 
             String sql = "SELECT p.id, p.codigo, p.nombre, p.descripcion, p.precio, p.stock, " +
                     "p.categoria_id, c.nombre as categoria_nombre, c.descripcion as categoria_descripcion, " +
-                    "p.activo " +
+                    "p.activo, p.unidad_venta " +
                     "FROM PRODUCTO p " +
                     "INNER JOIN CATEGORIA c ON p.categoria_id = c.id " +
                     "WHERE p.activo = 1 " +
@@ -42,6 +42,7 @@ public class ProductoController {
                 producto.setPrecio(rs.getDouble("precio"));
                 producto.setStock(rs.getInt("stock"));
                 producto.setActivo(rs.getBoolean("activo"));
+                producto.setUnidadVenta(rs.getString("unidad_venta"));
 
                 // Crear y asignar la categoría
                 Categoria categoria = new Categoria();
