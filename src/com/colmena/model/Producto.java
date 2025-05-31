@@ -9,6 +9,7 @@ public class Producto {
     private Categoria categoria;
     private boolean activo;
     private String codigo;
+    private String unidadVenta;
 
     // Constructor
     public Producto() {}
@@ -86,4 +87,13 @@ public class Producto {
     public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
+
+       public String getUnidadVenta() {
+        return unidadVenta;
+    }
+
+    public void setUnidadVenta(String unidadVenta) {
+        this.unidadVenta = unidadVenta;
+    }
+
 }

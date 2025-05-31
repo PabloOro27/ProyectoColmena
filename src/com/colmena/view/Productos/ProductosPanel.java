@@ -31,7 +31,7 @@ public class ProductosPanel extends JPanel {
     private JTable tablaProductos;
     private DefaultTableModel modeloTabla;
     private JTextField txtBuscar;
-    private JComboBox<Categoria> cmbCategorias;
+    private JComboBox<Categoria> cmbCategorias; 
     private JComboBox<String> cmbFiltroStock;
     private JButton btnAgregar;
     private JButton btnEditar;
@@ -85,7 +85,7 @@ public class ProductosPanel extends JPanel {
 
         // Filtro de búsqueda
         JLabel lblBuscar = new JLabel("Buscar:");
-        lblBuscar.setFont(new Font("Arial", Font.PLAIN, 12));
+        lblBuscar.setFont(new Font("Arial", Font.PLAIN, 14));
         lblBuscar.setForeground(COLOR_TEXTO);
 
         txtBuscar = new JTextField(15);
@@ -99,12 +99,12 @@ public class ProductosPanel extends JPanel {
 
         // Filtro por categoría
         JLabel lblCategoria = new JLabel("Categoría:");
-        lblCategoria.setFont(new Font("Arial", Font.PLAIN, 12));
+        lblCategoria.setFont(new Font("Arial", Font.PLAIN, 14));
         lblCategoria.setForeground(COLOR_TEXTO);
 
         cmbCategorias = new JComboBox<>();
         cmbCategorias.setPreferredSize(new Dimension(150, 28));
-        cmbCategorias.addItem(null); // Opción "Todas"
+        cmbCategorias.addItem(null); 
         cmbCategorias.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
@@ -122,7 +122,7 @@ public class ProductosPanel extends JPanel {
 
         // Filtro por stock
         JLabel lblStock = new JLabel("Stock:");
-        lblStock.setFont(new Font("Arial", Font.PLAIN, 12));
+        lblStock.setFont(new Font("Arial", Font.PLAIN, 14));
         lblStock.setForeground(COLOR_TEXTO);
 
         cmbFiltroStock = new JComboBox<>(new String[] { "Todos", "Con stock", "Sin stock", "Stock bajo" });
@@ -187,6 +187,7 @@ public class ProductosPanel extends JPanel {
         modeloTabla.addColumn("Categoría");
         modeloTabla.addColumn("Precio");
         modeloTabla.addColumn("Stock");
+        modeloTabla.addColumn("Unidad");
 
         // Crear tabla
         tablaProductos = new JTable(modeloTabla);
@@ -194,7 +195,10 @@ public class ProductosPanel extends JPanel {
         tablaProductos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tablaProductos.setAutoCreateRowSorter(true);
         tablaProductos.getTableHeader().setReorderingAllowed(false);
-        tablaProductos.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+        tablaProductos.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+        tablaProductos.setFont(new Font(tablaProductos.getFont().getName(), 
+                                 tablaProductos.getFont().getStyle(), 
+                                 15));
 
         // Configurar renderizadores de celda
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -242,11 +246,13 @@ public class ProductosPanel extends JPanel {
         tablaProductos.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
 
         tablaProductos.getColumnModel().getColumn(0).setPreferredWidth(80);
-        tablaProductos.getColumnModel().getColumn(1).setPreferredWidth(200);
-        tablaProductos.getColumnModel().getColumn(2).setPreferredWidth(250);
-        tablaProductos.getColumnModel().getColumn(3).setPreferredWidth(120);
-        tablaProductos.getColumnModel().getColumn(4).setPreferredWidth(80);
-        tablaProductos.getColumnModel().getColumn(5).setPreferredWidth(60);
+        tablaProductos.getColumnModel().getColumn(1).setPreferredWidth(185);
+        tablaProductos.getColumnModel().getColumn(2).setPreferredWidth(225);
+        tablaProductos.getColumnModel().getColumn(3).setPreferredWidth(110);
+        tablaProductos.getColumnModel().getColumn(4).setPreferredWidth(40);
+        tablaProductos.getColumnModel().getColumn(5).setPreferredWidth(40);
+        tablaProductos.getColumnModel().getColumn(6).setPreferredWidth(35);
+
 
         // scroll panel
         JScrollPane scrollPane = new JScrollPane(tablaProductos);
@@ -310,7 +316,8 @@ public class ProductosPanel extends JPanel {
                     producto.getDescripcion(),
                     producto.getCategoria().getNombre(),
                     producto.getPrecio(),
-                    producto.getStock()
+                    producto.getStock(),
+                    producto.getUnidadVenta()
             });
         }
         lblTotalProductos.setText("Total: " + productos.size() + " productos");
@@ -351,7 +358,8 @@ public class ProductosPanel extends JPanel {
                         producto.getDescripcion(),
                         producto.getCategoria().getNombre(),
                         producto.getPrecio(),
-                        producto.getStock()
+                        producto.getStock(),
+                        producto.getUnidadVenta()
                 });
                 contadorFiltrados++;
             }
@@ -444,7 +452,7 @@ public class ProductosPanel extends JPanel {
             // Información del producto
             JLabel lblProducto = new JLabel("Producto:");
             JLabel lblProductoValor = new JLabel(productoSeleccionado.getNombre());
-            lblProductoValor.setFont(new Font("Arial", Font.BOLD, 12));
+            lblProductoValor.setFont(new Font("Arial", Font.BOLD, 16));
 
             JLabel lblStockActual = new JLabel("Stock Actual:");
             JLabel lblStockActualValor = new JLabel(String.valueOf(stockActual));

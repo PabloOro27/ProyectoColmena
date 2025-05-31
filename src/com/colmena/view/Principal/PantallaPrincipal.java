@@ -1,5 +1,6 @@
 package com.colmena.view.Principal;
 
+import com.colmena.model.Rol;
 import com.colmena.model.Usuario;
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +12,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import com.colmena.controller.PrincipalController;
+import com.colmena.view.Clientes.ClientesPanel;
 import com.colmena.view.Productos.ProductosPanel;
 import com.colmena.view.Usuario.*;
 import javax.swing.plaf.basic.BasicButtonUI;
@@ -41,7 +43,6 @@ public class PantallaPrincipal extends JFrame {
     private JButton btnClientes;
     private JButton btnReportes;
     private JButton btnUsuarios;
-    private JButton btnConfiguracion;
     private JButton btnSalir;
 
     // Información del usuario
@@ -57,8 +58,8 @@ public class PantallaPrincipal extends JFrame {
 
         // Configuración básica
         setTitle("Colmena - Sistema de Gestión de Globos");
-        setSize(1200, 700);
-        setMinimumSize(new Dimension(800, 600));
+        setSize(1500, 800);
+        setMinimumSize(new Dimension(1250, 700));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -74,11 +75,11 @@ public class PantallaPrincipal extends JFrame {
         mainPanel = new JPanel(new BorderLayout(0, 0));
         mainPanel.setBackground(COLOR_FONDO);
 
-        // Crear panel de menú lateral
+        // Panel de menú lateral
         menuPanel = createMenuPanel();
         mainPanel.add(menuPanel, BorderLayout.WEST);
 
-        // Panel de contenido principal (donde se cargarán las vistas)
+        // Panel de contenido
         JPanel rightPanel = new JPanel(new BorderLayout(0, 0));
         rightPanel.setBackground(COLOR_FONDO);
 
@@ -155,25 +156,25 @@ public class PantallaPrincipal extends JFrame {
         // Crear botones del menú
         btnDashboard = createMenuButton("Principal", "dashboard.png", e -> showDashboardPanel());
         btnProductos = createMenuButton("Productos", "products.png", e -> showProductosPanel());
-        btnVentas = createMenuButton("Ventas", "sales.png", e -> showVentasPanel());
+        // btnVentas = createMenuButton("Ventas", "sales.png", e -> showVentasPanel());
         btnClientes = createMenuButton("Clientes", "clients.png", e -> showClientesPanel());
-        btnReportes = createMenuButton("Reportes", "reports.png", e -> showReportesPanel());
+        // btnReportes = createMenuButton("Reportes", "reports.png", e -> showReportesPanel());
         btnUsuarios = createMenuButton("Usuarios", "users.png", e -> showUsuariosPanel());
-        btnConfiguracion = createMenuButton("Configuración", "settings.png", e -> showConfiguracionPanel());
+        // btnConfiguracion = createMenuButton("Configuración", "settings.png", e -> showConfiguracionPanel());
         btnSalir = createMenuButton("Cerrar Sesión", "logout.png", e -> cerrarSesion());
 
         // Agregar botones al panel
         buttonsPanel.add(Box.createVerticalStrut(10));
         addMenuButton(buttonsPanel, btnDashboard);
         addMenuButton(buttonsPanel, btnProductos);
-        addMenuButton(buttonsPanel, btnVentas);
+        // addMenuButton(buttonsPanel, btnVentas);
         addMenuButton(buttonsPanel, btnClientes);
-        addMenuButton(buttonsPanel, btnReportes);
+        // addMenuButton(buttonsPanel, btnReportes);
 
         // Solo mostrar botones de administración si el usuario es admin
-        if (usuarioActual.getRol().equalsIgnoreCase("Administrador")) {
+        if (usuarioActual.getRol().getNombre().equalsIgnoreCase("Administrador")) {
             addMenuButton(buttonsPanel, btnUsuarios);
-            addMenuButton(buttonsPanel, btnConfiguracion);
+            // addMenuButton(buttonsPanel, btnConfiguracion);
         }
 
         buttonsPanel.add(Box.createVerticalGlue()); // Espacio flexible
@@ -200,7 +201,7 @@ public class PantallaPrincipal extends JFrame {
         lblUsuario.setFont(new Font("Arial", Font.BOLD, 13));
         lblUsuario.setForeground(Color.WHITE);
 
-        lblRol = new JLabel(usuarioActual.getRol());
+        lblRol = new JLabel(usuarioActual.getRol().getNombre());
         lblRol.setFont(new Font("Arial", Font.PLAIN, 12));
         lblRol.setForeground(COLOR_AMARILLO_CLARO);
 
@@ -389,25 +390,7 @@ public class PantallaPrincipal extends JFrame {
 
         dashboardPanel.add(topPanel, BorderLayout.NORTH);
         dashboardPanel.add(statsPanel, BorderLayout.CENTER);
-
-        // Agregar panel de productos más vendidos si está disponible
-        Map<String, Integer> productosMasVendidos = dashboardController.obtenerProductosMasVendidos();
-        if (!productosMasVendidos.isEmpty()) {
-            JPanel chartsPanel = new JPanel(new GridLayout(1, 2, 15, 0));
-            chartsPanel.setBackground(COLOR_FONDO);
-
-            JPanel topProductsPanel = createTopProductsPanel(productosMasVendidos);
-            chartsPanel.add(topProductsPanel);
-
-            // Si también tenemos datos de ventas por categoría
-            Map<String, Double> ventasPorCategoria = dashboardController.obtenerVentasPorCategoria();
-            if (!ventasPorCategoria.isEmpty()) {
-                JPanel categorySalesPanel = createCategorySalesPanel(ventasPorCategoria);
-                chartsPanel.add(categorySalesPanel);
-            }
-
-            dashboardPanel.add(chartsPanel, BorderLayout.SOUTH);
-        }
+        
 
         contentPanel.add(dashboardPanel, BorderLayout.CENTER);
         contentPanel.revalidate();
@@ -505,11 +488,7 @@ public class PantallaPrincipal extends JFrame {
 
         // Aquí crearías e insertarías tu panel de gestión de ventas
         JPanel constructionPanel = createConstructionPanel("Registro de Ventas",
-                "<html>Aquí podrás registrar y gestionar las ventas.<br>"
-                        + "• Crear nuevas ventas<br>"
-                        + "• Ver historial de ventas<br>"
-                        + "• Gestionar pagos pendientes<br>"
-                        + "• Generar facturas</html>");
+                "Falta");
 
         contentPanel.add(constructionPanel, BorderLayout.CENTER);
         contentPanel.revalidate();
@@ -518,16 +497,10 @@ public class PantallaPrincipal extends JFrame {
 
     private void showClientesPanel() {
         contentPanel.removeAll();
+        
+        ClientesPanel clientesPanel = new ClientesPanel(usuarioActual);
 
-        // Aquí crearías e insertarías tu panel de gestión de clientes
-        JPanel constructionPanel = createConstructionPanel("Gestión de Clientes",
-                "<html>Aquí podrás administrar la información de tus clientes.<br>"
-                        + "• Ver lista de clientes<br>"
-                        + "• Añadir nuevos clientes<br>"
-                        + "• Actualizar datos de contacto<br>"
-                        + "• Ver historial de compras</html>");
-
-        contentPanel.add(constructionPanel, BorderLayout.CENTER);
+        contentPanel.add(clientesPanel, BorderLayout.CENTER);
         contentPanel.revalidate();
         contentPanel.repaint();
     }
@@ -537,11 +510,7 @@ public class PantallaPrincipal extends JFrame {
 
         // Aquí crearías e insertarías tu panel de reportes
         JPanel constructionPanel = createConstructionPanel("Reportes y Estadísticas",
-                "<html>Aquí podrás generar informes y visualizar estadísticas.<br>"
-                        + "• Ventas por período<br>"
-                        + "• Productos más vendidos<br>"
-                        + "• Inventario bajo mínimo<br>"
-                        + "• Reportes financieros</html>");
+                "Falta");
 
         contentPanel.add(constructionPanel, BorderLayout.CENTER);
         contentPanel.revalidate();
@@ -550,32 +519,10 @@ public class PantallaPrincipal extends JFrame {
 
     private void showUsuariosPanel() {
         contentPanel.removeAll();
+        
+        UsuariosPanel usuariosPanel = new UsuariosPanel(usuarioActual);
 
-        // Aquí crearías e insertarías tu panel de gestión de usuarios
-        JPanel constructionPanel = createConstructionPanel("Administración de Usuarios",
-                "<html>Aquí podrás administrar los usuarios del sistema.<br>"
-                        + "• Ver usuarios registrados<br>"
-                        + "• Crear nuevos usuarios<br>"
-                        + "• Asignar roles y permisos<br>"
-                        + "• Activar/desactivar cuentas</html>");
-
-        contentPanel.add(constructionPanel, BorderLayout.CENTER);
-        contentPanel.revalidate();
-        contentPanel.repaint();
-    }
-
-    private void showConfiguracionPanel() {
-        contentPanel.removeAll();
-
-        // Aquí crearías e insertarías tu panel de configuración
-        JPanel constructionPanel = createConstructionPanel("Configuración del Sistema",
-                "<html>Aquí podrás configurar los parámetros del sistema.<br>"
-                        + "• Configuración general<br>"
-                        + "• Parámetros de facturación<br>"
-                        + "• Ajustes de inventario<br>"
-                        + "• Copias de seguridad</html>");
-
-        contentPanel.add(constructionPanel, BorderLayout.CENTER);
+        contentPanel.add(usuariosPanel, BorderLayout.CENTER);
         contentPanel.revalidate();
         contentPanel.repaint();
     }
@@ -605,7 +552,7 @@ public class PantallaPrincipal extends JFrame {
         gbc.gridy = 1;
         gbc.insets = new Insets(0, 0, 20, 0);
 
-        JLabel lblConstruction = new JLabel("Esta sección está en construcción");
+        JLabel lblConstruction = new JLabel("Falta generar");
         lblConstruction.setFont(new Font("Arial", Font.ITALIC, 16));
         lblConstruction.setForeground(COLOR_TEXTO_CLARO);
         infoPanel.add(lblConstruction, gbc);
@@ -638,133 +585,6 @@ public class PantallaPrincipal extends JFrame {
         }
     }
 
-    private JPanel createTopProductsPanel(Map<String, Integer> productosMasVendidos) {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(COLOR_FONDO);
-        panel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(220, 220, 220), 1, true),
-                BorderFactory.createEmptyBorder(15, 15, 15, 15)));
-
-        JLabel lblTitle = new JLabel("Productos Más Vendidos (Último Mes)");
-        lblTitle.setFont(new Font("Arial", Font.BOLD, 14));
-        lblTitle.setForeground(COLOR_TEXTO);
-
-        panel.add(lblTitle, BorderLayout.NORTH);
-
-        // Panel para los productos
-        JPanel productsListPanel = new JPanel();
-        productsListPanel.setLayout(new BoxLayout(productsListPanel, BoxLayout.Y_AXIS));
-        productsListPanel.setBackground(COLOR_FONDO);
-
-        // Encontrar el máximo valor para calcular porcentajes de las barras
-        int maxValue = productosMasVendidos.values().stream().max(Integer::compare).orElse(1);
-
-        // Agregar cada producto con una barra de progreso
-        for (Map.Entry<String, Integer> entry : productosMasVendidos.entrySet()) {
-            String producto = entry.getKey();
-            int cantidad = entry.getValue();
-
-            JPanel itemPanel = new JPanel(new BorderLayout(10, 0));
-            itemPanel.setBackground(COLOR_FONDO);
-
-            JLabel lblProducto = new JLabel(producto);
-            lblProducto.setFont(new Font("Arial", Font.PLAIN, 12));
-            lblProducto.setForeground(COLOR_TEXTO);
-
-            JLabel lblCantidad = new JLabel(String.valueOf(cantidad));
-            lblCantidad.setFont(new Font("Arial", Font.BOLD, 12));
-            lblCantidad.setForeground(COLOR_AMARILLO.darker());
-
-            // Barra de progreso
-            JProgressBar progressBar = new JProgressBar(0, 100);
-            progressBar.setValue((int) (((double) cantidad / maxValue) * 100));
-            progressBar.setStringPainted(false);
-            progressBar.setForeground(COLOR_AMARILLO);
-            progressBar.setBackground(new Color(240, 240, 240));
-
-            itemPanel.add(lblProducto, BorderLayout.WEST);
-            itemPanel.add(progressBar, BorderLayout.CENTER);
-            itemPanel.add(lblCantidad, BorderLayout.EAST);
-
-            productsListPanel.add(itemPanel);
-            productsListPanel.add(Box.createVerticalStrut(10)); // Espacio entre elementos
-        }
-
-        JScrollPane scrollPane = new JScrollPane(productsListPanel);
-        scrollPane.setBorder(null);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
-        panel.add(scrollPane, BorderLayout.CENTER);
-
-        return panel;
-    }
-
-    private JPanel createCategorySalesPanel(Map<String, Double> ventasPorCategoria) {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(COLOR_FONDO);
-        panel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(220, 220, 220), 1, true),
-                BorderFactory.createEmptyBorder(15, 15, 15, 15)));
-
-        JLabel lblTitle = new JLabel("Ventas por Categoría (Último Mes)");
-        lblTitle.setFont(new Font("Arial", Font.BOLD, 14));
-        lblTitle.setForeground(COLOR_TEXTO);
-
-        panel.add(lblTitle, BorderLayout.NORTH);
-
-        // Panel para las categorías
-        JPanel categoriesListPanel = new JPanel();
-        categoriesListPanel.setLayout(new BoxLayout(categoriesListPanel, BoxLayout.Y_AXIS));
-        categoriesListPanel.setBackground(COLOR_FONDO);
-
-        // Formateador para valores monetarios
-        NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance(new Locale("es", "GT"));
-
-        // Encontrar el máximo valor para calcular porcentajes de las barras
-        double maxValue = ventasPorCategoria.values().stream().max(Double::compare).orElse(1.0);
-
-        // Agregar cada categoría con una barra de progreso
-        for (Map.Entry<String, Double> entry : ventasPorCategoria.entrySet()) {
-            String categoria = entry.getKey();
-            double monto = entry.getValue();
-
-            JPanel itemPanel = new JPanel(new BorderLayout(10, 0));
-            itemPanel.setBackground(COLOR_FONDO);
-
-            JLabel lblCategoria = new JLabel(categoria);
-            lblCategoria.setFont(new Font("Arial", Font.PLAIN, 12));
-            lblCategoria.setForeground(COLOR_TEXTO);
-
-            JLabel lblMonto = new JLabel(formatoMoneda.format(monto));
-            lblMonto.setFont(new Font("Arial", Font.BOLD, 12));
-            lblMonto.setForeground(COLOR_AMARILLO.darker());
-
-            // Barra de progreso
-            JProgressBar progressBar = new JProgressBar(0, 100);
-            progressBar.setValue((int) (((double) monto / maxValue) * 100));
-            progressBar.setStringPainted(false);
-            progressBar.setForeground(COLOR_AMARILLO);
-            progressBar.setBackground(new Color(240, 240, 240));
-
-            itemPanel.add(lblCategoria, BorderLayout.WEST);
-            itemPanel.add(progressBar, BorderLayout.CENTER);
-            itemPanel.add(lblMonto, BorderLayout.EAST);
-
-            categoriesListPanel.add(itemPanel);
-            categoriesListPanel.add(Box.createVerticalStrut(10)); // Espacio entre elementos
-        }
-
-        JScrollPane scrollPane = new JScrollPane(categoriesListPanel);
-        scrollPane.setBorder(null);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
-        panel.add(scrollPane, BorderLayout.CENTER);
-
-        return panel;
-    }
-
     // Método para ajustar la interfaz cuando se redimensiona la ventana
     @Override
     public void setBounds(int x, int y, int width, int height) {
@@ -782,13 +602,18 @@ public class PantallaPrincipal extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
+            // rol pruebas 
+            Rol rol = new Rol();
+            rol.setId(1);
+            rol.setNombre("ADMINISTRADOR");
+
             // usuario de prueba
             Usuario testUser = new Usuario();
             testUser.setId(1);
             testUser.setNombre("Admin");
             testUser.setApellido("Sistema");
             testUser.setEmail("admin@colmena.com");
-            testUser.setRol("Administrador");
+            testUser.setRol(rol);
             testUser.setActivo(true);
 
             // Mostrar la ventana principal
