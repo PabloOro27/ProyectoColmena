@@ -6,14 +6,15 @@ public class Usuario {
     private String apellido;
     private String email;
     private String password;
-    private String rol;
+    private int idRol;
     private boolean activo;
+    private Rol rol;    
 
     //Constructor 
     public Usuario() {
     }
 
-    public Usuario(int id, String nombre, String apellido, String email, String rol, boolean activo) {
+    public Usuario(int id, String nombre, String apellido, String email, Rol rol, boolean activo) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -23,6 +24,22 @@ public class Usuario {
     }
 
     // Getters y Setters
+    public Rol getRol() {
+        return rol;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
+    }
+
+    public int getIdRol() {
+        return idRol;
+    }
+
+    public void setIdRol(int idRol) {
+        this.idRol = idRol;
+    }
+
     public int getId() {
         return id;
     }
@@ -62,15 +79,7 @@ public class Usuario {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public String getRol() {
-        return rol;
-    }
-
-    public void setRol(String rol) {
-        this.rol = rol;
-    }
-
+    
     public boolean isActivo() {
         return activo;
     }

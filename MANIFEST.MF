@@ -1,0 +1,4 @@
+Manifest-Version: 1.0 
+Main-Class: com.colmena.app.ColmenaApp 
+Class-Path: lib/mssql-jdbc-12.4.2.jre11.jar lib/jbcrypt-0.4.jar 
+ 

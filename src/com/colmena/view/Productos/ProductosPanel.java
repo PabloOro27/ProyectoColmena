@@ -31,7 +31,7 @@ public class ProductosPanel extends JPanel {
     private JTable tablaProductos;
     private DefaultTableModel modeloTabla;
     private JTextField txtBuscar;
-    private JComboBox<Categoria> cmbCategorias;
+    private JComboBox<Categoria> cmbCategorias; 
     private JComboBox<String> cmbFiltroStock;
     private JButton btnAgregar;
     private JButton btnEditar;
@@ -104,7 +104,7 @@ public class ProductosPanel extends JPanel {
 
         cmbCategorias = new JComboBox<>();
         cmbCategorias.setPreferredSize(new Dimension(150, 28));
-        cmbCategorias.addItem(null); // Opción "Todas"
+        cmbCategorias.addItem(null); 
         cmbCategorias.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
